@@ -1,4 +1,4 @@
-package loans;
+package loans.v0;
 
 import org.joda.time.DateTime;
 

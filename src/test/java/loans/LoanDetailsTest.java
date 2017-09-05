@@ -1,8 +1,9 @@
 package loans;
 
+import loans.v0.LoanDetails;
+import loans.v0.LoanType;
 import org.joda.time.DateTime;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 
 import static junit.framework.TestCase.assertEquals;

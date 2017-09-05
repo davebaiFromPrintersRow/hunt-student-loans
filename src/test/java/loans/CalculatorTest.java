@@ -1,5 +1,6 @@
 package loans;
 
+import loans.v0.Calculator;
 import org.joda.time.DateTime;
 import org.junit.Test;
 
