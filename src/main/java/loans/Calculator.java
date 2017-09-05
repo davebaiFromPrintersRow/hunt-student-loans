@@ -13,14 +13,17 @@ public class Calculator {
 
     public static double getInterestAccruement(double currentPrincipalBalance, int daysSinceLastPayment, double interestRate) {
         double interestRateFactor = getInterestRateFactor(interestRate);
-        double runningInterestAmount = 0;
+        double todaysInterest = 0;
+        double runningInterest = 0;
         double runningPrincipalBalance = currentPrincipalBalance;
 
         for (int i = 0; i < daysSinceLastPayment; i++) {
-            runningInterestAmount += runningPrincipalBalance * interestRateFactor;
-            runningPrincipalBalance += runningInterestAmount;
+            todaysInterest = runningPrincipalBalance * interestRateFactor;
+
+            runningInterest += todaysInterest;
+            runningPrincipalBalance += todaysInterest;
         }
-        return runningInterestAmount;
+        return runningInterest;
     }
 
     public static double getInterestRateFactor(double interestRate) {
@@ -28,6 +31,6 @@ public class Calculator {
     }
 
     public static int getDaysSinceLastPayment(DateTime lastPaymentDate, DateTime dateOfPayment) {
-        return Days.daysBetween(lastPaymentDate.toLocalDate(), dateOfPayment.toLocalDate()).getDays() + 1;
+        return Days.daysBetween(lastPaymentDate.toLocalDate(), dateOfPayment.toLocalDate()).getDays();
     }
 }

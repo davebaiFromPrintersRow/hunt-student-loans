@@ -15,7 +15,5 @@ public class CalculatorTest {
 
         int daysInBetween = Calculator.getDaysSinceLastPayment(new DateTime(2017, 7, 3, 0, 0), new DateTime(2017, 8, 1, 0, 0));
         assertEquals(13.54, Calculator.getInterestAccruement(3250.18, daysInBetween, .05), ACCEPTABLE_DELTA_FOR_ASSERTIONS_ON_DOLLAR_PAYMENTS);
-
-        assertEquals(1, Calculator.getDaysSinceLastPayment(new DateTime(2017, 1, 1, 0, 0, 0), new DateTime(2017, 1, 1, 0, 0)));
     }
 }

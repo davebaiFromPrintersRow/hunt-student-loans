@@ -1,9 +1,7 @@
 package loans;
 
 import org.joda.time.DateTime;
-import org.joda.time.Days;
 
-import java.util.Date;
 import java.util.logging.Logger;
 
 public class LoanDetails {
@@ -14,18 +12,50 @@ public class LoanDetails {
 
     private final LoanType loanType;
     private final double originalDisbursementAmount;
-    private final double remainingPrincipalBalance;
+    private double remainingPrincipalBalance;
     private final double interestRate;
     private final DateTime lastPaymentDate;
 
-    public double getInterestPaymentOnUpcomingBill(DateTime dateOfPayment) {
-        int daysBetweenPayment = Calculator.getDaysSinceLastPayment(lastPaymentDate, dateOfPayment);
-        return Calculator.getInterestAccruement(remainingPrincipalBalance, daysBetweenPayment, interestRate);
-
+    public static void main(String[] args) {
+        LoanDetails perkins4000 = new LoanDetailsBuilder(LoanType.Federal_Perkins, 4000)
+                .remainingPrincipalBalance(4000)
+                .interestRate(.05)
+                .lastPaymentDate(new DateTime(2017, 7, 03, 0, 0))
+                .build();
+        double perkinsAMinimumPayment = 42.43;
+        String paymentPlan = perkins4000.getPaymentPlan(perkinsAMinimumPayment);
+        System.out.println(paymentPlan);
     }
 
-    private double getInterestRateFactor() {
-        return interestRate / DAYS_IN_YEAR;
+    public double applyPayment(double paymentAmount, int daysSinceLastPayment) {
+        double interestAccruement = Calculator.getInterestAccruement(remainingPrincipalBalance, daysSinceLastPayment, interestRate);
+        double principalApplied = paymentAmount - interestAccruement;
+        remainingPrincipalBalance -= principalApplied;
+        return principalApplied;
+    }
+
+    private String getPaymentPlan(double paymentPerMonth) {
+        StringBuilder sb = new StringBuilder();
+        sb.append("*********************************************************^^*********************************************************");
+        sb.append("\n");
+        int countMonths = 0;
+        while (remainingPrincipalBalance > 0) {
+            double principalApplied = applyPayment(paymentPerMonth, 31);// just to be save and overestimate interest amount, use 31 days per month as average
+            sb.append("month: " + countMonths);
+            sb.append("\t");
+            sb.append("apply: " + paymentPerMonth);
+            sb.append("\t");
+            sb.append("interest: " + String.format("%.2f", (paymentPerMonth - principalApplied)));
+            sb.append("\t");
+            sb.append("principal: " + String.format("%.2f", principalApplied));
+            sb.append("\t");
+            sb.append("remain: " + String.format("%.2f", remainingPrincipalBalance));
+            sb.append("\n");
+            countMonths++;
+        }
+        sb.append("*********************************************************^^*********************************************************");
+        sb.append("\n");
+        return sb.toString();
     }
 
     private LoanDetails(LoanDetailsBuilder builder) {
