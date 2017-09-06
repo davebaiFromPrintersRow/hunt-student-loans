@@ -39,13 +39,16 @@ public class LoanDetails {
         sb.append("*********************************************************^^*********************************************************");
         sb.append("\n");
         int countMonths = 0;
+        double totalInterestPaid = 0;
         while (remainingPrincipalBalance > 0) {
             double principalApplied = applyPayment(paymentPerMonth, 31);// just to be save and overestimate interest amount, use 31 days per month as average
             sb.append("month: " + countMonths);
             sb.append("\t");
             sb.append("apply: " + paymentPerMonth);
             sb.append("\t");
-            sb.append("interest: " + String.format("%.2f", (paymentPerMonth - principalApplied)));
+            double interest = paymentPerMonth - principalApplied;
+            totalInterestPaid += interest;
+            sb.append("interest: " + String.format("%.2f", (interest)));
             sb.append("\t");
             sb.append("principal: " + String.format("%.2f", principalApplied));
             sb.append("\t");
@@ -55,6 +58,7 @@ public class LoanDetails {
         }
         sb.append("*********************************************************^^*********************************************************");
         sb.append("\n");
+        sb.append("Total interest: " + totalInterestPaid);
         return sb.toString();
     }
 

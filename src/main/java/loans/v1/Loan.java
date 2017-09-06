@@ -7,4 +7,9 @@ public interface Loan {
     public double getInterestRate();
 
     public double getOriginalDisbursement();
+
+    public double getRemainingPrincipal();
+
+    public void setRemainingPrincipal(double remainingPrincipal);
+
 }

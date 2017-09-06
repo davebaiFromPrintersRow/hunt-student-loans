@@ -11,7 +11,12 @@ public class Calculator {
 
     private static final double DAYS_IN_YEAR = 365.25;
 
-    public static double getInterestAccruement(double currentPrincipalBalance, int daysSinceLastPayment, double interestRate) {
+    public static void main(String[] args) {
+        double interestAccruement = getInterestAccruement(3750.14, 28, .05);
+        System.out.println(interestAccruement);
+    }
+
+    public static double getInterestAccruement(double currentPrincipalBalance, double daysSinceLastPayment, double interestRate) {
         double interestRateFactor = getInterestRateFactor(interestRate);
         double todaysInterest = 0;
         double runningInterest = 0;
